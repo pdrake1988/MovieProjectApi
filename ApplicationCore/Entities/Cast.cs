@@ -2,7 +2,7 @@
 
 namespace ApplicationCore.Entities;
 
-public class Crew
+public class Cast
 {
     public int Id { get; set; }
 
