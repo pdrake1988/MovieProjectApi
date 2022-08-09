@@ -1,0 +1,47 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using ApplicationCore.Contracts.Services;
+using ApplicationCore.Entities;
+using ApplicationCore.Models;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+
+namespace MovieProjectApi.Controllers
+{
+    [Route("api/[controller]")]
+    [ApiController]
+    public class GenreController : ControllerBase
+    {
+        private readonly IGenreServiceAsync _genreService;
+
+        public GenreController(IGenreServiceAsync genreService)
+        {
+            _genreService = genreService;
+        }
+
+        [HttpGet]
+        [Route("GetAllGenres")]
+        public async Task<IActionResult> GetAllGenres()
+        {
+            var result = await _genreService.GetAllGenresAsync();
+            return Ok(result);
+        }
+
+        [HttpGet]
+        [Route("GetGenreById/{id}")]
+        public async Task<IActionResult> GetGenreById(int id)
+        {
+            var result = await _genreService.GetGenreByIdAsync(id);
+            return Ok(result);
+        }
+
+        [HttpPost]
+        [Route("CreateGenre")]
+        public async Task<int> CreateGenre(GenreModel genre)
+        {
+            return await _genreService.CreateGenreAsync(genre);
+        }
+    }
+}

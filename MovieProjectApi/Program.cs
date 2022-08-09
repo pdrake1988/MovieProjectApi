@@ -13,16 +13,19 @@ builder.Services.AddSqlServer<MovieDbContext>(
 );
 builder.Services.AddScoped<IMovieRepositoryAsync, MovieRepositoryAsync>();
 builder.Services.AddScoped<ICastRepositoryAsync, CastRepositoryAsync>();
+builder.Services.AddScoped<IGenreRepositoryAsync, GenreRepositoryAsync>();
 builder.Services.AddScoped<IMovieServiceAsync, MovieServiceAsync>();
 builder.Services.AddScoped<ICastServiceAsync, CastServiceAsync>();
+builder.Services.AddScoped<IGenreServiceAsync, GenreServiceAsync>();
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy(name: "AllowSpecificOrigins", builder =>
-    {
-        builder.WithOrigins("http://localhost:4200")
-            .AllowAnyHeader()
-            .AllowAnyMethod();
-    });
+    options.AddPolicy(
+        name: "AllowAllOrigins",
+        builder =>
+        {
+            builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();
+        }
+    );
 });
 builder.Services.AddSwaggerGen();
 builder.Services.AddControllers();
@@ -39,6 +42,8 @@ builder.Services.AddAuthorization(options =>
 });
 
 var app = builder.Build();
+
+app.UseCors();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
