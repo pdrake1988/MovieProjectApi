@@ -22,10 +22,10 @@ public class Movie
     public decimal Revenue { get; set; }
 
     [Column(TypeName = "varchar(2084)")]
-    public string ImdbId { get; set; }
+    public string ImdbUrl { get; set; }
 
     [Column(TypeName = "varchar(2084)")]
-    public string TmdbId { get; set; }
+    public string TmdbUrl { get; set; }
 
     [Column(TypeName = "varchar(2084)")]
     public string PosterUrl { get; set; }
@@ -38,7 +38,7 @@ public class Movie
 
     public DateTime ReleaseDate { get; set; }
 
-    public int RunTime { get; set; }
+    public int Runtime { get; set; }
 
     [Column(TypeName = "decimal(5, 2)")]
     public decimal Price { get; set; }
