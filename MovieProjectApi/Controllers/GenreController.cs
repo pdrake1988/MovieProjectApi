@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using ApplicationCore.Contracts.Services;
 using ApplicationCore.Entities;
 using ApplicationCore.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -22,6 +23,7 @@ namespace MovieProjectApi.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         [Route("GetAllGenres")]
         public async Task<IActionResult> GetAllGenres()
         {
@@ -30,6 +32,7 @@ namespace MovieProjectApi.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         [Route("GetGenreById/{id}")]
         public async Task<IActionResult> GetGenreById(int id)
         {
@@ -38,6 +41,7 @@ namespace MovieProjectApi.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         [Route("CreateGenre")]
         public async Task<int> CreateGenre(GenreModel genre)
         {

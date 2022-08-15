@@ -16,7 +16,8 @@ public class MovieModel
     public DateTime ReleaseDate { get; set; }
     public int Runtime { get; set; }
     public decimal Price { get; set; }
-
+    public int GenreId { get; set; }
     public List<Genre> Genres { get; set; }
+    public int CastId { get; set; }
     public List<Cast> Cast { get; set; }
 }

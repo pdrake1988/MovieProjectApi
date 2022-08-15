@@ -1,12 +1,12 @@
-﻿using System.Diagnostics;
-using ApplicationCore.Entities;
+﻿using ApplicationCore.Entities;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Data;
 
-public class MovieDbContext : DbContext
+public class MovieDbContext : IdentityDbContext<User>
 {
-    public MovieDbContext(DbContextOptions options) : base(options) { }
+    public MovieDbContext(DbContextOptions<MovieDbContext> options) : base(options) { }
 
     public DbSet<Movie> Movies { get; set; }
     public DbSet<Genre> Genres { get; set; }

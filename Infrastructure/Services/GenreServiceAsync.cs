@@ -8,16 +8,23 @@ namespace Infrastructure.Services;
 public class GenreServiceAsync : IGenreServiceAsync
 {
     private readonly IGenreRepositoryAsync _genreRepository;
+    private readonly IMovieRepositoryAsync _movieRepository;
 
     public GenreServiceAsync(IGenreRepositoryAsync genreRepository)
     {
         _genreRepository = genreRepository;
     }
 
-    public Task<int> CreateGenreAsync(GenreModel genre)
+    public async Task<int> CreateGenreAsync(GenreModel genre)
     {
-        Genre genreEntity = new Genre { Id = genre.Id, Name = genre.Name, };
-        return _genreRepository.InsertAsync(genreEntity);
+        Genre genreEntity = new Genre
+        {
+            Id = genre.Id,
+            Name = genre.Name,
+            Movies = new List<Movie>()
+        };
+        genreEntity.Movies.Add(await _movieRepository.GetByIdAsync(genre.MovieId));
+        return await _genreRepository.InsertAsync(genreEntity);
     }
 
     public async Task<GenreModel> GetGenreByIdAsync(int id)

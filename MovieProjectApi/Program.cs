@@ -1,9 +1,13 @@
+using System.Text;
 using ApplicationCore.Contracts.Repository;
 using ApplicationCore.Contracts.Services;
+using ApplicationCore.Entities;
 using Infrastructure.Data;
 using Infrastructure.Repository;
 using Infrastructure.Services;
-using Microsoft.AspNetCore.Authentication.Negotiate;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,6 +15,11 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddSqlServer<MovieDbContext>(
     builder.Configuration.GetConnectionString("DefaultConnection")
 );
+builder.Services
+    .AddIdentity<User, IdentityRole>()
+    .AddEntityFrameworkStores<MovieDbContext>()
+    .AddDefaultTokenProviders();
+builder.Services.AddScoped<IAccountRepositoryAsync, AccountRepositoryAsync>();
 builder.Services.AddScoped<IMovieRepositoryAsync, MovieRepositoryAsync>();
 builder.Services.AddScoped<ICastRepositoryAsync, CastRepositoryAsync>();
 builder.Services.AddScoped<IGenreRepositoryAsync, GenreRepositoryAsync>();
@@ -33,7 +42,29 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 
-builder.Services.AddAuthentication(NegotiateDefaults.AuthenticationScheme).AddNegotiate();
+builder.Services
+    .AddAuthentication(options =>
+    {
+        options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+        options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+        options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+    })
+    .AddJwtBearer(options =>
+    {
+        options.SaveToken = true;
+        options.RequireHttpsMetadata = false;
+        options.TokenValidationParameters = 
+            new Microsoft.IdentityModel.Tokens.TokenValidationParameters
+            {
+                ValidateIssuer = true,
+                ValidateAudience = true,
+                ValidAudience = builder.Configuration["JWT: ValidAudience"],
+                ValidIssuer = builder.Configuration["JWT: ValidIssuer"],
+                IssuerSigningKey = new SymmetricSecurityKey(
+                    Encoding.UTF8.GetBytes(builder.Configuration["JWT: SecretKey"])
+                )
+            };
+    });
 
 builder.Services.AddAuthorization(options =>
 {

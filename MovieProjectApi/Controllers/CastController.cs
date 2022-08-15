@@ -1,9 +1,5 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using ApplicationCore.Contracts.Services;
-using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MovieProjectApi.Controllers
@@ -20,20 +16,23 @@ namespace MovieProjectApi.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         [Route("GetAllCastsMembers")]
         public async Task<IEnumerable<CastModel>> GetAllCastsMembers()
         {
-            return await _castService.GetCastsAsync();
+            return await _castService.GetCastAsync();
         }
 
         [HttpGet]
+        [Authorize]
         [Route("GetCastMemberById/{id}")]
         public async Task<CastModel> GetCastMemberById(int id)
         {
-            return await _castService.GetCastAsync(id);
+            return await _castService.GetCastMemberAsync(id);
         }
 
         [HttpPost]
+        [Authorize]
         [Route("AddCastMember/{CastMember}")]
         public async Task<int> AddCastMember(CastModel castMember)
         {

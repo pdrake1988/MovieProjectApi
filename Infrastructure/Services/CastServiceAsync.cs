@@ -1,20 +1,24 @@
 ﻿using ApplicationCore.Contracts.Repository;
 using ApplicationCore.Contracts.Services;
 using ApplicationCore.Entities;
-using ApplicationCore.Models;
 
 namespace Infrastructure.Services;
 
 public class CastServiceAsync : ICastServiceAsync
 {
+    private readonly IMovieRepositoryAsync _movieRepository;
     private readonly ICastRepositoryAsync _castRepository;
 
-    public CastServiceAsync(ICastRepositoryAsync castRepository)
+    public CastServiceAsync(
+        ICastRepositoryAsync castRepository,
+        IMovieRepositoryAsync movieRepository
+    )
     {
         _castRepository = castRepository;
+        _movieRepository = movieRepository;
     }
 
-    public async Task<CastModel> GetCastAsync(int id)
+    public async Task<CastModel> GetCastMemberAsync(int id)
     {
         Cast cast = await _castRepository.GetByIdAsync(id);
         if (cast != null)
@@ -31,7 +35,7 @@ public class CastServiceAsync : ICastServiceAsync
         return null;
     }
 
-    public async Task<IEnumerable<CastModel>> GetCastsAsync()
+    public async Task<IEnumerable<CastModel>> GetCastAsync()
     {
         var cast = await _castRepository.GetAllAsync();
         if (cast != null)
@@ -61,8 +65,9 @@ public class CastServiceAsync : ICastServiceAsync
             Name = cast.Name,
             Gender = cast.Gender,
             TmdbUrl = cast.TmdbUrl,
-            Movies = cast.Movies.ToList(),
+            Movies = new List<Movie>()
         };
+        newCast.Movies.Add(await _movieRepository.GetByIdAsync(cast.MovieId));
         return await _castRepository.InsertAsync(newCast);
     }
 }

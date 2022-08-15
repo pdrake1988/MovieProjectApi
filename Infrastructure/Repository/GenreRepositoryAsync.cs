@@ -6,5 +6,5 @@ namespace Infrastructure.Repository;
 
 public class GenreRepositoryAsync : BaseRepositoryAsync<Genre>, IGenreRepositoryAsync
 {
-    protected GenreRepositoryAsync(MovieDbContext context) : base(context) { }
+    public GenreRepositoryAsync(MovieDbContext context) : base(context) { }
 }

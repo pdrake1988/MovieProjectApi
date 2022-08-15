@@ -8,6 +8,8 @@ namespace Infrastructure.Services;
 public class MovieServiceAsync : IMovieServiceAsync
 {
     private readonly IMovieRepositoryAsync _movieRepository;
+    private readonly IGenreRepositoryAsync _genreRepository;
+    private readonly ICastRepositoryAsync _castRepository;
 
     public MovieServiceAsync(IMovieRepositoryAsync movieRepository)
     {
@@ -69,7 +71,7 @@ public class MovieServiceAsync : IMovieServiceAsync
         }
     }
 
-    public Task<int> CreateMovieAsync(MovieModel movie)
+    public async Task<int> CreateMovieAsync(MovieModel movie)
     {
         Movie newMovie = new Movie()
         {
@@ -83,9 +85,11 @@ public class MovieServiceAsync : IMovieServiceAsync
             ReleaseDate = movie.ReleaseDate,
             Runtime = movie.Runtime,
             Price = movie.Price,
-            Genres = movie.Genres,
-            Cast = movie.Cast
+            Genres = new List<Genre>(),
+            Cast = new List<Cast>()
         };
-        return _movieRepository.InsertAsync(newMovie);
+        newMovie.Genres.Add(await _genreRepository.GetByIdAsync(movie.GenreId));
+        newMovie.Cast.Add(await _castRepository.GetByIdAsync(movie.CastId));
+        return await _movieRepository.InsertAsync(newMovie);
     }
 }

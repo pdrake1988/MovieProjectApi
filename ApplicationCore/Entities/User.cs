@@ -1,11 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.AspNetCore.Identity;
 
 namespace ApplicationCore.Entities;
 
-public class User
+public class User : IdentityUser
 {
-    public int Id { get; set; }
-
     [Column(TypeName = "varchar(128)")]
     public string FirstName { get; set; }
 
