@@ -17,8 +17,8 @@ namespace MovieProjectApi.Controllers
 
         [HttpGet]
         [Authorize]
-        [Route("GetAllCastsMembers")]
-        public async Task<IEnumerable<CastModel>> GetAllCastsMembers()
+        [Route("GetAllCastMembers")]
+        public async Task<IEnumerable<CastModel>> GetAllCastMembers()
         {
             return await _castService.GetCastAsync();
         }

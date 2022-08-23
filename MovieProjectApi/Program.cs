@@ -23,9 +23,13 @@ builder.Services.AddScoped<IAccountRepositoryAsync, AccountRepositoryAsync>();
 builder.Services.AddScoped<IMovieRepositoryAsync, MovieRepositoryAsync>();
 builder.Services.AddScoped<ICastRepositoryAsync, CastRepositoryAsync>();
 builder.Services.AddScoped<IGenreRepositoryAsync, GenreRepositoryAsync>();
+builder.Services.AddScoped<IPurchaseRepositoryAsync, PurchaseRepositoryAsync>();
+builder.Services.AddScoped<IFavoriteRepositoryAsync, FavoriteRepositoryAsync>();
 builder.Services.AddScoped<IMovieServiceAsync, MovieServiceAsync>();
 builder.Services.AddScoped<ICastServiceAsync, CastServiceAsync>();
 builder.Services.AddScoped<IGenreServiceAsync, GenreServiceAsync>();
+builder.Services.AddScoped<IPurchaseServiceAsync, PurchaseServiceAsync>();
+builder.Services.AddScoped<IFavoriteServiceAsync, FavoriteServiceAsync>();
 builder.Services.AddCors(options =>
 {
     options.AddPolicy(
@@ -53,24 +57,24 @@ builder.Services
     {
         options.SaveToken = true;
         options.RequireHttpsMetadata = false;
-        options.TokenValidationParameters = 
+        options.TokenValidationParameters =
             new Microsoft.IdentityModel.Tokens.TokenValidationParameters
             {
                 ValidateIssuer = true,
                 ValidateAudience = true,
-                ValidAudience = builder.Configuration["JWT: ValidAudience"],
-                ValidIssuer = builder.Configuration["JWT: ValidIssuer"],
+                ValidAudience = builder.Configuration["JWT:ValidAudience"],
+                ValidIssuer = builder.Configuration["JWT:ValidIssuer"],
                 IssuerSigningKey = new SymmetricSecurityKey(
-                    Encoding.UTF8.GetBytes(builder.Configuration["JWT: SecretKey"])
+                    Encoding.UTF8.GetBytes(builder.Configuration["JWT:SecretKey"])
                 )
             };
     });
 
-builder.Services.AddAuthorization(options =>
-{
-    // By default, all incoming requests will be authorized according to the default policy.
-    options.FallbackPolicy = options.DefaultPolicy;
-});
+// builder.Services.AddAuthorization(options =>
+// {
+//     // By default, all incoming requests will be authorized according to the default policy.
+//     options.FallbackPolicy = options.DefaultPolicy;
+// });
 
 var app = builder.Build();
 
@@ -84,7 +88,6 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
 app.UseAuthentication();
 app.UseAuthorization();
 

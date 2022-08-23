@@ -35,7 +35,9 @@ public class MovieServiceAsync : IMovieServiceAsync
                 Runtime = movie.Runtime,
                 Price = movie.Price,
                 Genres = movie.Genres.ToList(),
-                Cast = movie.Cast.ToList()
+                Cast = movie.Cast.ToList(),
+                Purchases = movie.Purchases.ToList(),
+                Favorites = movie.Favorites.ToList()
             };
             return movieModel;
         }
@@ -63,7 +65,9 @@ public class MovieServiceAsync : IMovieServiceAsync
                     Runtime = movie.Runtime,
                     Price = movie.Price,
                     Genres = movie.Genres.ToList(),
-                    Cast = movie.Cast.ToList()
+                    Cast = movie.Cast.ToList(),
+                    Purchases = movie.Purchases.ToList(),
+                    Favorites = movie.Favorites.ToList()
                 };
                 movieModels.Add(movieModel);
             }

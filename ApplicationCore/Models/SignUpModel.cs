@@ -14,9 +14,9 @@ public class SignUpModel
     public string Email { get; set; }
 
     [Required]
-    [Compare("HashedPassword")]
+    [Compare("ConfirmedPassword")]
     public string Password { get; set; }
 
     [Required]
-    public string HashedPassword { get; set; }
+    public string ConfirmedPassword { get; set; }
 }

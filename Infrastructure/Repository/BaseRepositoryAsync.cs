@@ -8,7 +8,7 @@ public class BaseRepositoryAsync<T> : IRepositoryAsync<T> where T : class
 {
     private readonly MovieDbContext _context;
 
-    protected BaseRepositoryAsync(MovieDbContext context)
+    public BaseRepositoryAsync(MovieDbContext context)
     {
         _context = context;
     }

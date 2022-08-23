@@ -20,4 +20,8 @@ public class MovieModel
     public List<Genre> Genres { get; set; }
     public int CastId { get; set; }
     public List<Cast> Cast { get; set; }
+    public int PurchaseId { get; set; }
+    public List<Purchase> Purchases { get; set; }
+    public int FavoriteId { get; set; }
+    public List<Favorite> Favorites { get; set; }
 }
